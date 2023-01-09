@@ -1,11 +1,26 @@
 cmake_minimum_required(VERSION 3.10)
-project(ROOT)
+project(CARTHAGE)
+
+include(FetchContent)
+
 enable_testing()
 include_directories(src)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_subdirectory(test/gtestDir)
+add_subdirectory(lib/googletest)
 add_subdirectory(src)
-add_subdirectory(test)
+#add_subdirectory(test)
+
+
+# cmake_minimum_required(VERSION 3.10)
+# project(ExampleProject)
+
+# set(CMAKE_CXX_STANDARD 14)
+
+# include_directories(src)
+
+# add_subdirectory(src)
+# add_subdirectory(tst)
+# add_subdirectory(lib/googletest)

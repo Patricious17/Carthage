@@ -7,8 +7,6 @@
 #include <vector>
 #include <queue>
 
-#include "../../test/gtestDir/googletest-src/googletest/include/gtest/gtest_prod.h"
-
 using eventName = const std::string;
 
 class BareEvent {
@@ -54,7 +52,6 @@ private:
 	std::map<eventName, std::set<void (*)(void *)>> sockets_;
 	EventQueue eventQueue_;
 	int numSockets_;
-	FRIEND_TEST(EventDispatcherTest, Basics);
 };
 
 #endif

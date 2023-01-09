@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.10)
-project(Planner)
+project(${PROJECT_NAME}_OS)
 
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-SET(CMAKE_CXX_FLAGS -pthread)
+set(LIBRARY ${CMAKE_PROJECT_NAME}_lib)
 
 enable_testing()
 
-include_directories(include ${gtest_SOURCE_DIR}/include/gtest)
+file(GLOB_RECURSE SOURCES LIST_DIRECTORIES true RELATIVE ${CMAKE_CURRENT_LIST_DIR} *.h *.hpp *.c *.cpp)
+message(${SOURCES})
 
-#add_library(Map2d map2d.cpp include/map2d.hpp)
-add_library(eventSystem eventSystem.cpp include/eventSystem.hpp)
-target_link_libraries(eventSystem gtest gtest_main)
-add_executable(Planner plannerMain.cpp include/plannerMain.hpp include/basicTypes.hpp include/eventSystem.hpp eventSystem.cpp)
+set(CMAKE_CXX_FLAGS -pthread)
 
-target_link_libraries(Planner eventSystem pthread)
+set(SOURCES ${SOURCES})
+
+add_library(${LIBRARY} STATIC ${SOURCES})
+
+target_link_libraries(${LIBRARY} pthread)

@@ -15,3 +15,5 @@ set(SOURCES ${SOURCES})
 add_library(${LIBRARY} STATIC ${SOURCES})
 
 target_link_libraries(${LIBRARY} pthread)
+
+add_executable(main plannerMain.cpp)

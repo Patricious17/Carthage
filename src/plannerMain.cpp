@@ -1,7 +1,7 @@
-#include "plannerMain.hpp"
 //#include "map2d.hpp"
 #include "basicTypes.hpp"
 #include "eventSystem.hpp"
+#include <iostream>
 
 void testInitializations(){
 	Vector<int> vInt;
@@ -18,5 +18,7 @@ int main () {
 	//testInitializations();
 	//test1();
 	//testDispatcher1();
+	std::cout << "Exit plannerMain";
+
 	return 1;
 }

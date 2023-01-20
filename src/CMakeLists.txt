@@ -1,7 +1,10 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14)
 project(${PROJECT_NAME}_OS)
 
-set(LIBRARY ${CMAKE_PROJECT_NAME}_lib)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(LIBRARY ${CMAKE_PROJECT_NAME})
 
 enable_testing()
 
@@ -16,4 +19,6 @@ add_library(${LIBRARY} STATIC ${SOURCES})
 
 target_link_libraries(${LIBRARY} pthread)
 
-add_executable(main plannerMain.cpp)
+add_executable(main evSysMain.cpp)
+
+target_link_libraries(main ${LIBRARY})

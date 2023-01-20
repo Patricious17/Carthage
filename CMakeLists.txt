@@ -19,8 +19,8 @@ FetchContent_MakeAvailable(googletest)
 # target_link_libraries(example gtest_main)
 # add_test(NAME example_test COMMAND example)
 
-# include_directories(src)
+include_directories(src)
 
 add_subdirectory(src)
-# add_subdirectory(tst)
+add_subdirectory(tests)
 # add_subdirectory(lib/googletest)

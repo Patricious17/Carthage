@@ -5,53 +5,60 @@
 #include <map>
 #include <set>
 #include <vector>
-#include <queue>
+#include <deque>
 
-using eventName = const std::string;
+namespace evSys {
+
+const size_t MAX_QUEUE_SIZE = 2000; 
 
 class BareEvent {
 public:
-	BareEvent(eventName& name) : name_(name) {}
-	eventName getName() { return name_; }
+	BareEvent(std::string name) : name_(name) {}
+	std::string getName() { return name_; }
 private:
-	eventName name_;
+	std::string name_;
 };
 
-template <class messageType>
+template <class topicType>
 class Event : public BareEvent {
 public:
-	Event(eventName name, messageType msg) 
+	Event(std::string name, topicType msg)
 	: BareEvent(name), message_(msg) {}
 
-	messageType getMessage() { return message_; }
+	topicType getMessage() { return message_; }
 private:
-	messageType message_;
+	topicType message_;
 };
 
 class EventQueue {
 public:
-	EventQueue(size_t maxSize = 2) : maxSize_(maxSize) {};
+	EventQueue() : maxSize_(MAX_QUEUE_SIZE) {};
+	EventQueue(size_t maxSize) : maxSize_(std::min(MAX_QUEUE_SIZE, maxSize)) {};
 	size_t size() { return evQ_.size(); }
 	BareEvent * pop();
 	bool push(BareEvent *);
 	BareEvent * front();
+	std::vector<std::string> getEventNames();
 private:
 	std::size_t maxSize_;
-	std::queue<BareEvent *> evQ_;
+	std::deque<BareEvent *> evQ_;
 };
 
 
 class EventDispatcher {
 public:
-	void registerCallback(const eventName&, void (*)(void *));
+	void registerCallback(const std::string&, void (*)(void *));
 	void dispatchEvent();
 	void dispatchAllEvents();
 	bool reportEvent(BareEvent * ev);
 	int getNumSockets() { return numSockets_; }
+	void showUndispatchedEvents();
 private:
-	std::map<eventName, std::set<void (*)(void *)>> sockets_;
+	std::map<std::string, std::set<void (*)(void *)>> sockets_;
 	EventQueue eventQueue_;
 	int numSockets_;
 };
+
+} // namespace evSys
 
 #endif

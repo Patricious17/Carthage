@@ -22,17 +22,19 @@ TEST(TestEvent, TestGetMessage){
 }
 
 std::string msg("");
+static int NUM_MSG_DISP = 0;
 
 void messageDisplay(void * bEv) {
 	es::Event<std::string> * ev;
 	ev = static_cast<decltype(ev)>(bEv);
     std::cout << "| " << ev->getMessage() << " |" << std::endl;
     msg = ev->getMessage();
+	NUM_MSG_DISP++;
 };
 
-TEST(EventDispatcherTest, Basics) {
-	std::string messageTransmitted = "messageTransmitted";
-	es::Event<std::string> * ev = new es::Event<std::string>(messageTransmitted, "messageContent");
+TEST(EventDispatcherTest, BasicTest) {
+	std::string incomingMessage = "incomingMessage";
+	es::Event<std::string> * ev = new es::Event<std::string>(incomingMessage, "messageContent");
 	es::EventDispatcher * dsp = new es::EventDispatcher();
 
 	dsp->registerCallback(ev->getName(), &messageDisplay);
@@ -47,15 +49,27 @@ TEST(EventDispatcherTest, Basics) {
     dsp->showUndispatchedEvents();
 	EXPECT_EQ("messageContent", msg);
 
-	// delete dsp; delete ev;
+	delete dsp; delete ev;
 }
 
-// TEST(EventDispatcherTest, MultipleSocketsBasics) {
-// 	const int numEventNames = 100;
-// 	std::vector<std::string> eventNames;
-// 	for (int i = 1; i <= numEventNames; i++) eventNames.push_back(std::string("Event") + std::to_string(i));
-// 	//for ()
-// }
+TEST(EventDispatcherTest, MultipleSocketsBasicTest) {
+	const int numEventNames = 100;
+	std::vector<es::Event<std::string> *> events(numEventNames, nullptr);
+	for (size_t i = 0; i < numEventNames; i++) events[i] = new es::Event<std::string>("incomingMessage", std::string("message ") + std::to_string(i));
+
+	es::EventDispatcher * dsp = new es::EventDispatcher();
+	dsp->registerCallback("incomingMessage", &messageDisplay);
+	EXPECT_EQ(dsp->getNumSockets(), 1);
+
+	for (size_t i = 0; i < numEventNames; i++) dsp->reportEvent(events[i]);
+
+	dsp->showUndispatchedEvents();
+
+	NUM_MSG_DISP = 0;
+	for (size_t i = 0; i < numEventNames; i++) dsp->dispatchEvent();
+
+	EXPECT_EQ(NUM_MSG_DISP, 100);
+}
 
 GTEST_API_ int main(int argc, char **argv) {
     printf("Running main() from %s\n", __FILE__);

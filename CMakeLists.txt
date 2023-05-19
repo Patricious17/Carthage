@@ -22,8 +22,8 @@ FetchContent_Declare(
 set(FETCHCONTENT_QUIET OFF)
 FetchContent_MakeAvailable(gRPC)
 
-add_executable(my_exe my_exe.cc)
-target_link_libraries(my_exe grpc++)
+# add_executable(my_exe my_exe.cc)
+# target_link_libraries(my_exe grpc++)
 
 include_directories(src)
 
